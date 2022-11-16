@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -25,15 +26,17 @@ class UserServiceImplTest {
 
     @Mock
     UserRepo userRepo;
+    @Autowired
     private UserServiceImpl userServiceImplTest;
 
-    User user = null;
+    User user;
 
     @BeforeEach
     void setUp() {
         userServiceImplTest = new UserServiceImpl(userRepo);
 
-        user = new User("swift.taylor@gmail.com",
+        user = new User(
+                "swift.taylor@gmail.com",
                 "password",
                 "Swift",
                 "Taylor",
@@ -46,6 +49,7 @@ class UserServiceImplTest {
 
     @AfterEach
     void tearDown() {
+        user = null;
     }
 
     @Test
@@ -97,7 +101,6 @@ class UserServiceImplTest {
     @Test
     void emailExists() {
 
-        // When
         when(userRepo.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
 
         assertThat(userServiceImplTest.emailExists(user.getEmail())).isTrue();
@@ -107,10 +110,10 @@ class UserServiceImplTest {
     @Test
     void getByEmailThrowExceptionWhenNull() {
 
-        // When
         when(userRepo.findByEmail(null)).thenReturn(Optional.empty());
 
-        assertThatThrownBy( () -> userServiceImplTest.getByEmail(null)).isInstanceOf(RequestException.class)
+        assertThatThrownBy( () -> userServiceImplTest.getByEmail(null))
+                .isInstanceOf(RequestException.class)
                 .hasMessageContaining("Email doesn't exist.");
 
     }
