@@ -3,8 +3,7 @@ package com.krimo.BackendService.token;
 import com.krimo.BackendService.user.entity.model.User;
 import com.krimo.BackendService.user.entity.model.UserRole;
 import com.krimo.BackendService.user.entity.repository.UserRepo;
-import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.Before;
+
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -24,8 +23,8 @@ class VerificationTokenRepoTest {
     @Autowired
     private VerificationTokenRepo repoTest;
 
-    User user = null;
-    VerificationToken verificationToken = null;
+    User user;
+    VerificationToken verificationToken;
 
     @BeforeEach
     void setUp() {

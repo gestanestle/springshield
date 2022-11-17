@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDate;
 import java.time.Month;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -58,7 +59,6 @@ class UpdateServiceImplTest {
 
         user.setId(1L);
 
-
         userObject = new UserObject(
                 "alison@gmail.com",
                 "password",
@@ -67,7 +67,6 @@ class UpdateServiceImplTest {
                 "Alison",
                 LocalDate.of(1989, Month.DECEMBER, 13)
         );
-
 
         updateServiceImplTest = new UpdateServiceImpl(userService, userEmailService, passwordEncoder, tokenService);
     }
@@ -100,14 +99,14 @@ class UpdateServiceImplTest {
         verify(userService).saveUser(argument.capture());
         verify(tokenService).generateToken(argument.capture());
 
-        assertEquals(argument.getValue().getId(), update.getId());
+        assertThat(argument.getValue()).usingRecursiveComparison()
+                .ignoringFields("password").isEqualTo(update);
 
     }
 
 
     @Test
     void deleteUser() {
-
 
         when(userEmailService.getByEmail(email)).thenReturn(user);
 
