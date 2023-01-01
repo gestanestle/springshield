@@ -1,7 +1,12 @@
-# Backend Service with SpringBoot and PostgreSQL
+# Backend Service with Spring Boot and PostgreSQL
 REST API ready to consume from front-end technologies.
 
-This project implements user signup, email verification with Gmail SMTP, and login authentication. Endpoints are secured with custom authorization and Json Web Tokens. The technologies used are Spring Web, Spring Security, Spring JPA, and PostgreSQL. The main classes have been unit tested with JUnit and Mockito.  
+This project implements user signup, email verification with Gmail SMTP, and login authentication. Endpoints are secured with custom authorization and Json Web Tokens. The technologies used are Spring Web, Spring Security, Spring JPA, and PostgreSQL. The main classes have been unit tested with JUnit 5 and Mockito.  
+
+Below is the architecture of the classes inside this project.
+
+![CABS](https://user-images.githubusercontent.com/83026862/210170598-19fbf337-6644-49b2-83b5-b09f9190682d.jpg)
+
 
 ## Docker 
 
