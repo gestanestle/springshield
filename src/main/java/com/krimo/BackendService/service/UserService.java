@@ -1,7 +1,5 @@
 package com.krimo.BackendService.service;
 
-import com.krimo.BackendService.dto.UserDTO;
-
 import com.krimo.BackendService.dto.UserProfileDTO;
 import com.krimo.BackendService.model.User;
 

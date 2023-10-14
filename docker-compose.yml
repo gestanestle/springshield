@@ -1,23 +1,23 @@
 version: '3.9'
 services:
-#  backend-service:
-#    image: gestanestle/backend-service:1.0.0
-#    ports:
-#      - "8080:8080"
-#    depends_on:
-#      PostgreSQL:
-#        condition: service_healthy
-#    environment:
-#      - SPRING_DATASOURCE_URL=jdbc:postgresql://PostgreSQL:5432/backend_service
-#      - SPRING_DATASOURCE_USERNAME=postgres
-#      - SPRING_DATASOURCE_PASSWORD=postgres
-#      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+  backend-service:
+    image: gestanestle/backend-service:2.0.0
+    container_name: backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/backend_service
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    networks:
+      - backend-network
 
   postgres:
     container_name: postgres
     image: debezium/postgres:15-alpine
-    ports:
-      - "5432:5432"
     environment:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
@@ -27,9 +27,14 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    volumes:
+      - pg_data:/var/lib/postgresql/data
     networks:
       - backend-network
 
 networks:
   backend-network:
     name: backend-network
+
+volumes:
+  pg_data:
