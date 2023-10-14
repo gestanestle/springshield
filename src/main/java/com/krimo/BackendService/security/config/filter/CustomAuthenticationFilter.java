@@ -2,8 +2,9 @@ package com.krimo.BackendService.security.config.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.krimo.BackendService.security.UsernamePasswordAuthToken;
-import com.krimo.BackendService.security.utils.JWTUtility;
-import com.krimo.BackendService.user.entity.model.User;
+
+import com.krimo.BackendService.model.User;
+import com.krimo.BackendService.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
@@ -25,8 +26,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
-
-    private final JWTUtility jwtUtility;
     private final UsernamePasswordAuthToken usernamePasswordAuthToken;
 
     /**
@@ -67,23 +66,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         User user = (User) authResult.getPrincipal();
 
-        // Access tokens last for 15 minutes
-        String access_token = jwtUtility.createJwt(
-                user.getUsername(),
-                request.getRequestURL().toString(),
-                user.getAuthorities(),
-                900000);
-
-        // Refresh tokens last for 14 days
-        String refresh_token = jwtUtility.createJwt(
-                user.getUsername(),
-                request.getRequestURL().toString(),
-                user.getAuthorities(),
-                1209600000);
-
-        Map <String, String> tokens = new HashMap<>();
-        tokens.put("access_token", access_token);
-        tokens.put("refresh_token", refresh_token);
+        Map<String, String> tokens = Utils.createTokens(request.getRequestURL().toString(), user);
 
         OutputStream out = response.getOutputStream();
         response.setContentType(APPLICATION_JSON_VALUE);
