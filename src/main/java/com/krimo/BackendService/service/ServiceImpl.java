@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import static com.krimo.BackendService.utils.Message.*;
 
@@ -49,11 +50,7 @@ public class ServiceImpl implements UserService, AuthService, UserDetailsService
 
         User entity = userRepository.save(user);
 
-        String code = Utils.generateSerialCode();
-        ActivationCode activationCode = ActivationCode.of(code, entity);
-        codeRepository.save(activationCode);
-
-        emailSenderService.sendMaiL(userDTO.email(), EMAIL_SUB.message, String.format(EMAIL_BODY.message, code));
+        sendActivation(entity.getId());
 
         return entity.getId();
     }
@@ -73,10 +70,11 @@ public class ServiceImpl implements UserService, AuthService, UserDetailsService
     @Override
     public void sendActivation(Long id) {
         User user = userRepository.findById(id).orElseThrow();
-        ActivationCode activationCode = ActivationCode.of(Utils.generateSerialCode(), user);
+        String code = Utils.generateSerialCode();
+        ActivationCode activationCode = ActivationCode.of(code, user);
         codeRepository.save(activationCode);
 
-        emailSenderService.sendMaiL(user.getEmail(), EMAIL_SUB.message, EMAIL_BODY.message);
+        emailSenderService.sendMaiL(user.getEmail(), EMAIL_SUB.message, String.format(EMAIL_BODY.message, code));
     }
 
 
@@ -129,11 +127,11 @@ public class ServiceImpl implements UserService, AuthService, UserDetailsService
         UserDTO userDTO = userProfileDTO.userDTO();
         ProfileDTO profileDTO = userProfileDTO.profileDTO();
 
-        if (userDTO.password() != null) user.setPassword(encode(userDTO.password()));
-        if (profileDTO.lastName() != null) profile.setLastName(profileDTO.lastName());
-        if (profileDTO.firstName() != null) profile.setFirstName(profileDTO.firstName());
-        if (profileDTO.middleName() != null) profile.setMiddleName(profileDTO.middleName());
-        if (profileDTO.birthdate() != null) profile.setBirthdate(profileDTO.birthdate());
+        if (Objects.nonNull(userDTO.password()))        user.setPassword(encode(userDTO.password()));
+        if (Objects.nonNull(profileDTO.lastName()))     profile.setLastName(profileDTO.lastName());
+        if (Objects.nonNull(profileDTO.firstName()))    profile.setFirstName(profileDTO.firstName());
+        if (Objects.nonNull(profileDTO.middleName()))   profile.setMiddleName(profileDTO.middleName());
+        if (Objects.nonNull(profileDTO.birthdate()))    profile.setBirthdate(profileDTO.birthdate());
 
         userRepository.save(user);
         profile.setUser(user);
