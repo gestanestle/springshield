@@ -28,4 +28,11 @@ public class UserProfile {
     @JoinColumn (name = "user_account_id")
     private User user;
 
+    public UserProfile(String lastName, String firstName, String middleName, LocalDate birthdate, User user) {
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.birthdate = birthdate;
+        this.user = user;
+    }
 }

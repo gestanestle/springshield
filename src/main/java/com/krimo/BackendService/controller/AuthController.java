@@ -29,19 +29,19 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<Object> signUp(@RequestBody UserDTO userDTO) {
-        Long id = authService.signUp(userDTO);
-        return new ResponseEntity<>(id, HttpStatus.CREATED);
+        authService.signUp(userDTO);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PostMapping("/activate/{id}")
-    public ResponseEntity<Object> activate(@PathVariable("id") Long id, @RequestBody CodeDTO codeDTO) {
-        authService.activate(id, codeDTO);
+    @PostMapping("/activate/{email}")
+    public ResponseEntity<Object> activate(@PathVariable("email") String email, @RequestBody CodeDTO codeDTO) {
+        authService.activate(email, codeDTO);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/resend/{id}")
-    public ResponseEntity<Object> resendActivation(@PathVariable("id") Long id) {
-        authService.sendActivation(id);
+    @GetMapping("/resend/{email}")
+    public ResponseEntity<Object> resendActivation(@PathVariable("email") String email) {
+        authService.sendActivation(email);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -52,7 +52,7 @@ public class AuthController {
 
         User user = authService.authorize(header);
 
-        Map<String, String> tokens = Utils.createTokens(request.getRequestURL().toString(), user);
+        Map<String, String> tokens = Utils.createAccessToken(request.getRequestURL().toString(), user);
 
         OutputStream out = response.getOutputStream();
         response.setContentType(APPLICATION_JSON_VALUE);

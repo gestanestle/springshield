@@ -6,9 +6,9 @@ import com.krimo.BackendService.model.User;
 
 public interface AuthService {
 
-    Long signUp(UserDTO userDTO);
-    void activate(Long id, CodeDTO codeDTO);
-    void sendActivation(Long id);
+    void signUp(UserDTO userDTO);
+    void activate(String email, CodeDTO codeDTO);
+    void sendActivation(String email);
     User authorize(String header);
 
 }

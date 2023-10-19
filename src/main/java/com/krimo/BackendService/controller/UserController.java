@@ -1,5 +1,5 @@
 package com.krimo.BackendService.controller;
-import com.krimo.BackendService.dto.UserProfileDTO;
+import com.krimo.BackendService.dto.UserDTO;
 import com.krimo.BackendService.model.User;
 import com.krimo.BackendService.service.AuthService;
 import com.krimo.BackendService.service.UserService;
@@ -22,18 +22,18 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<UserProfileDTO> showUser(HttpServletRequest request) {
+    public ResponseEntity<UserDTO> showUser(HttpServletRequest request) {
         String header = request.getHeader(AUTHORIZATION);
         User user = authService.authorize(header);
-        UserProfileDTO userProfileDTO = userService.displayUser(user.getEmail());
-        return new ResponseEntity<>(userProfileDTO, HttpStatus.OK);
+        UserDTO userDTO = userService.displayUser(user.getEmail());
+        return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<String> updateUser(@RequestBody UserProfileDTO userProfileDTO, HttpServletRequest request) {
+    public ResponseEntity<String> updateUser(@RequestBody UserDTO userDTO, HttpServletRequest request) {
         String header = request.getHeader(AUTHORIZATION);
         User user = authService.authorize(header);
-        userService.updateUser(user.getEmail(), userProfileDTO);
+        userService.updateUser(user.getEmail(), userDTO);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

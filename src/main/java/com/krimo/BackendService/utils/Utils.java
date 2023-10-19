@@ -42,6 +42,17 @@ public class Utils {
         return Map.of("access_token", access_token, "refresh_token", refresh_token);
     }
 
+    public static Map<String, String> createAccessToken(String url, User user) {
+        // Access tokens last for 15 minutes
+        String access_token = jwtUtils.createJwt(
+                user.getUsername(),
+                url,
+                user.getAuthorities(),
+                900000);
+
+        return Map.of("access_token", access_token);
+    }
+
     public static DecodedJWT getDecodedJWT(String token) {
         return jwtUtils.decodeJWT(token);
     }
