@@ -1,29 +1,28 @@
-version: '3.9'
 services:
-  backend-service:
-    image: gestanestle/backend-service:2.0.0
-    container_name: backend
-    ports:
-      - "8080:8080"
-    depends_on:
-      postgres:
-        condition: service_healthy
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/backend_service
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=postgres
-    networks:
-      - backend-network
+#  backend-service:
+#    image: gestanestle/backend-service:2.0.0
+#    container_name: backend
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      postgres:
+#        condition: service_healthy
+#    environment:
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/backend_service
+#      - SPRING_DATASOURCE_USERNAME=postgres
+#      - SPRING_DATASOURCE_PASSWORD=postgres
+#    networks:
+#      - backend-network
 
   postgres:
-    container_name: postgres
-    image: debezium/postgres:15-alpine
+    container_name: ss_postgres
+    image: postgres:15-alpine
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
-      - POSTGRES_DB=backend_service
+      - POSTGRES_DB=springshield
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -40,3 +39,4 @@ networks:
 
 volumes:
   pg_data:
+    name: pg_data

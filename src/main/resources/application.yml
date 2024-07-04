@@ -1,7 +1,7 @@
 # Spring Boot configuration
 spring:
   application:
-    name: Backend Service
+    name: springshield
   mail:
     host: smtp.gmail.com
     port: 587
@@ -17,7 +17,7 @@ spring:
   # Database
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/backend_service
+    url: jdbc:postgresql://localhost:5432/springshield
     username: postgres
     password: postgres
   # JPA properties
@@ -48,5 +48,3 @@ server:
   error:
     include-binding-errors: always
     include-message: always
-
-frontend-url: http://localhost:3000
