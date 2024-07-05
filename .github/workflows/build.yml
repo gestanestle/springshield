@@ -3,6 +3,9 @@ name: Java CI
 on:
   push:
     branches: [ "krimaster" ]
+    paths:
+      - "src/**"
+      - "pom.xml"
 
 jobs:
 
