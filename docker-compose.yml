@@ -1,18 +1,18 @@
 services:
-#  backend-service:
-#    image: gestanestle/backend-service:2.0.0
-#    container_name: backend
-#    ports:
-#      - "8080:8080"
-#    depends_on:
-#      postgres:
-#        condition: service_healthy
-#    environment:
-#      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/backend_service
-#      - SPRING_DATASOURCE_USERNAME=postgres
-#      - SPRING_DATASOURCE_PASSWORD=postgres
-#    networks:
-#      - backend-network
+  springshield:
+    image: gestanestle/springshield:3.0.0
+    container_name: springshield
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/springshield
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    networks:
+      - backend-network
 
   postgres:
     container_name: ss_postgres
